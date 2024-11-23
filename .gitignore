@@ -1,0 +1,5 @@
+.venv/
+*.log
+*.ipynb
+data/
+**/__pycache__/*
