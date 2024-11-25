@@ -25,4 +25,4 @@ jobs:
         
     - name: Run accuracy test
       run: |
-        python -m pytest tests/test_accuracy.py -v 
+        python -m pytest test.py -v 
