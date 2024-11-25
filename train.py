@@ -29,16 +29,16 @@ class Network(nn.Module):
         )
 
         self.classifier = nn.Sequential(
-            nn.Linear(12 * 7 * 7, 50),
+            nn.Linear(12 * 7 * 7, 40),
             nn.ReLU(),
-            nn.Linear(50, 10),
-        )  # Direct mapping to output classes
+            nn.Linear(40, 10),
+        )
 
     def forward(self, x):
         x = self.features(x)
         x = x.view(-1, self.classifier[0].in_features)
         x = self.classifier(x)
-        return F.softmax(x, dim=1)
+        return x
 
 
 def train_and_test(num_epochs=1):
@@ -49,8 +49,9 @@ def train_and_test(num_epochs=1):
     train_transform = transforms.Compose(
         [
             transforms.ToTensor(),
-            transforms.RandomHorizontalFlip(p=0.3),
             transforms.Normalize((0.5,), (0.5,)),
+            transforms.RandomPerspective(distortion_scale=0.2, p=0.5),
+            transforms.RandomErasing(p=0.1, scale=(0.02, 0.1)),
         ]
     )
 
@@ -102,6 +103,7 @@ def train_and_test(num_epochs=1):
             loss = criterion(output, target)
             loss.backward()
             optimizer.step()
+            scheduler.step()
 
             running_loss += loss.item()
 
