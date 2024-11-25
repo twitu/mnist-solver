@@ -41,7 +41,7 @@ class Network(nn.Module):
         return F.softmax(x, dim=1)
 
 
-def train_and_test():
+def train_and_test(num_epochs=1):
     # Set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -69,9 +69,6 @@ def train_and_test():
     # Create data loaders
     train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-    # Training loop
-    num_epochs = 2
 
     # Initialize model, loss function, and optimizer
     model = Network().to(device)
@@ -130,4 +127,4 @@ def train_and_test():
 
 
 if __name__ == "__main__":
-    train_and_test()
+    train_and_test(2)
